@@ -10,7 +10,6 @@
       <div>mapHeight: {{ mapHeight }}</div>
       <div>mapWidth: {{ mapWidth }}</div>
     </div>
-
     <div id="mapBox" class="container-map">
       <div id="imgWrap" class="container-map-div">
         <img
@@ -34,13 +33,13 @@
         src="@/source/map/reset.png"
         @click="resetMarker"
       />
-      <!-- <img class="" alt="Vue logo" src="../assets/logo.png" /> -->
     </div>
   </div>
 </template>
 
 <script>
-import CheckMarker from "@/components/marker.vue";
+import CheckMarker from "@/components/Marker";
+
 export default {
   components: {
     CheckMarker,
@@ -77,13 +76,14 @@ export default {
         key: this.markers.length,
       });
     },
-    dragStart() {
+    dragStart(e) {
       this.dragging = true;
-      const d = document.querySelector("#imgWrap");
-      this.elementOffsetX = this.img_x - d.offsetLeft;
-      this.elementOffsetY = this.img_y - d.offsetTop;
-      d.style.left = `${this.img_x - this.elementOffsetX}px`;
-      d.style.top = `${this.img_y - this.elementOffsetY}px`;
+      console.log("E", e);
+      const box = document.querySelector("#imgWrap");
+      this.elementOffsetX = this.img_x - box.offsetLeft;
+      this.elementOffsetY = this.img_y - box.offsetTop;
+      box.style.left = `${this.img_x - this.elementOffsetX}px`;
+      box.style.top = `${this.img_y - this.elementOffsetY}px`;
     },
     dragStop() {
       this.dragging = false;
@@ -96,9 +96,9 @@ export default {
       let totalX = this.img_x - this.elementOffsetX;
       let totalY = this.img_y - this.elementOffsetY;
       if (this.dragging && totalX < 0 && totalY < 0) {
-        const d = document.querySelector("#imgWrap");
-        d.style.left = `${totalX}px`;
-        d.style.top = `${totalY}px`;
+        const box = document.querySelector("#imgWrap");
+        box.style.left = `${totalX}px`;
+        box.style.top = `${totalY}px`;
       }
     },
   },
@@ -113,12 +113,13 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  margin-bottom: 100px;
   &-map {
     display: block;
     position: relative;
@@ -144,7 +145,6 @@ export default {
       &-marker {
         position: absolute;
         z-index: 2;
-        //   border: 1px solid blue;
         cursor: pointer;
         transform: translate(-43%, -87%);
       }
