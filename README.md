@@ -3,6 +3,10 @@
 ## Project setup
 ```
 npm install
+
+node version 14.17.0
+
+npm version 6.14.13
 ```
 
 ### Compiles and hot-reloads for development
