@@ -21,7 +21,7 @@
           @mousedown="dragStart"
           @mouseup="dragStop"
           @mousemove="dragGing"
-          @contextmenu="marker"
+          @contextmenu="mapMarker"
         />
         <template v-for="m in markers">
           <CheckMarker :mData="m" :key="m.key" />
@@ -59,7 +59,12 @@ export default {
   },
   methods: {
     resetMarker() {
-      this.markers = [];
+      const con = confirm("표기한 마커를 초기화 하시겠습니까?");
+      this.markers.length
+        ? con
+          ? (this.markers = [])
+          : con
+        : alert("초기화 할 마커가 존재하지 않습니다.");
     },
     watchMap() {
       const d = document.querySelector("#moveMap");
@@ -69,16 +74,15 @@ export default {
       this.mapWidth = d.clientWidth;
       this.mapHeight = d.clientHeight;
     },
-    marker(e) {
+    mapMarker(e) {
       this.markers.push({
         left: `${e.layerX}px`,
         top: `${e.layerY}px`,
         key: this.markers.length,
       });
     },
-    dragStart(e) {
+    dragStart() {
       this.dragging = true;
-      console.log("E", e);
       const box = document.querySelector("#imgWrap");
       this.elementOffsetX = this.img_x - box.offsetLeft;
       this.elementOffsetY = this.img_y - box.offsetTop;
@@ -115,22 +119,22 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   margin-bottom: 100px;
   &-map {
-    display: block;
     position: relative;
+    display: block;
     overflow: hidden;
     width: 1024px;
     height: 768px;
     cursor: move;
     // border: 1px solid black;
     &-div {
-      display: block;
       position: absolute;
+      display: block;
       z-index: 0;
       left: -200px;
       top: -200px;
